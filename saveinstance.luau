@@ -59,24 +59,6 @@ local service = setmetatable({}, {
 	end,
 })
 
-local StreamBuffer
-do
-	local filename = "StreamBuffer"
-
-local StreamBuffer
-do
-	local filename = "StreamBuffer"
-
-	-- Create a minimal StreamBuffer implementation locally
-	StreamBuffer = {}
-	
-	-- Add basic functionality
-	function StreamBuffer.new()
-		return setmetatable({
-			buffer = "",
-			position = 1
-		}, {__index = StreamBuffer})
-	end
 	
 	function StreamBuffer:write(data)
 		self.buffer = self.buffer .. data

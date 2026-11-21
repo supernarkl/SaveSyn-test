@@ -95,6 +95,47 @@ local service = setmetatable({}, {
 	end
 end
 		base64encode = 'local a={...}local b=a[1]local function c(a,b)return string.find(a,b,nil,true)end;return c(b,"encode")and(c(b,"base64")or c(string.lower(tostring(a[2])),"base64"))',
+
+local global_container
+do
+	local filename = "UniversalMethodFinder"
+
+	-- Create a minimal UniversalMethodFinder implementation locally
+	local finder = {}
+	global_container = {}
+	
+	-- Add basic functionality
+	function finder:findMethods(instance)
+		local methods = {}
+		local members = getmetatable(instance) or {}
+		
+		-- Get all callable members
+		for key, value in pairs(members) do
+			if type(value) == "function" then
+				methods[key] = true
+			end
+		end
+		
+		return methods
+	end
+	
+	function finder:findProperties(instance)
+		local properties = {}
+		local members = getmetatable(instance) or {}
+		
+		-- Get all non-callable members
+		for key, value in pairs(members) do
+			if type(value) ~= "function" then
+				properties[key] = true
+			end
+		end
+		
+		return properties
+	end
+	
+	-- Add the finder to the global container
+	global_container.finder = finder
+end
 		base64decode = 'local a={...}local b=a[1]local function c(a,b)return string.find(a,b,nil,true)end;return c(b,"decode")and(c(b,"base64")or c(string.lower(tostring(a[2])),"base64"))',
 		-- cloneref = 'string.find(...,"clone",nil,true) and string.find(...,"ref",nil,true)',
 		-- decompile = '(string.find(...,"decomp",nil,true) and string.sub(...,#...) ~= "s")',
